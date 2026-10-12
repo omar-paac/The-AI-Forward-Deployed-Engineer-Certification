@@ -8,7 +8,7 @@
 
 **Department:** Purchasing
 
-**Working title:** <!-- your answer here -->
+**Working title:** Vendor Quotes Collector
 
 ---
 
@@ -16,11 +16,11 @@
 
 **Who has it?** One real role, not a department.
 
-Opportunistic Purchasing
+Purchasing Representatives, around 10 people in total.
 
 **What are they trying to do?**
 
-Sourcing part numbers in the open market to restock. Identify vendors, send emails, wait for responses, and follow up. 
+Sourcing part numbers in the open market to restock. Identify vendors, send emails, wait for responses, and follow up.
 
 **How do they handle it today?**
 
@@ -28,11 +28,11 @@ Based on a purchase request, we source for the right vendor that matches our par
 
 **What does that cost — time, money, risk, or relationships?**
 
-Time, but also money: the faster we can get those parts in stock, the better positioned we will be to quote and sell. Customer Service level decreases.
+The purchasing representative spends ~15min in researching a part, in different ways, that costs a ball park estimate of $7 per part. Parts reaching later or not been available impact our customer service.
 
 **The problem in one sentence. No solution in it.**
 
-Time consuming sourcing process
+A slow part of getting material into stock is the 15 minutes manual quoting process the purchasing representative has to do before a PO is placed.
 
 ---
 
@@ -44,7 +44,8 @@ The person creates a Purchase Request and gets a notification once a Vendor RFQ 
 
 **How would the firm measure it? Which numbers should move?**
 
-Opportunistic Inventory Increase
+- A 20% increase on Part Numbers researched (REQ) per week.
+- A 10% increase on the opportunistic inventory.
 
 ---
 
@@ -52,7 +53,7 @@ Opportunistic Inventory Increase
 
 **Your solution in one sentence.**
 
-An autonomous agent that will help us navigate the sourcing process
+A module that will help us reduce the time spent in the sourcing process.
 
 **Input → Output.** Be specific enough that someone could build it wrong and you
 would notice.
@@ -60,7 +61,8 @@ would notice.
 | | |
 | --- | --- |
 | **In** | Part Number, Condition, Quantity |
-| **Out** | A vendor RFQ that can be converted into a PO |
+| **Out** | A ranked list of vendors whose ILS listing matches, each with the PN, condition and quantity they list and a one-sentence reason |
+| **Out** | No answer, with the reason, when no listing matches |
 
 ---
 

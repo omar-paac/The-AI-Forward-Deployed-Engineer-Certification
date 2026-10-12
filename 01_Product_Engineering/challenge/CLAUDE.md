@@ -273,3 +273,7 @@ and nobody will stop you. But you would be paying for a course and then opting
 out of it. Leave it until you have shipped Week 1 under your own power.
 
 Everything else here is yours. Adding to it is the exercise.
+
+## My Rules - OT
+
+Be concise. Keep README minimal. IMPORTANT: no emojis ever. When possible provide numbered points in your explanations.
