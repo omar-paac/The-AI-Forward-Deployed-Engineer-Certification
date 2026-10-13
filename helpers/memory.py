@@ -65,18 +65,6 @@ END;
 """
 
 
-_last = 0.0
-
-
-def _now() -> float:
-    """time.time(), but strictly increasing. Windows' clock ticks every ~15 ms,
-    so writes and recalls in the same tick would tie and LRU eviction would be
-    arbitrary."""
-    global _last
-    _last = max(time.time(), _last + 1e-6)
-    return _last
-
-
 @dataclass
 class Memory:
     id: int
@@ -103,7 +91,7 @@ class MemoryStore:
     def remember(self, kind: str, content: str, subject: str = "") -> int:
         cur = self.db.execute(
             "INSERT INTO memories (kind, subject, content, created) VALUES (?,?,?,?)",
-            (kind, subject, content, _now()),
+            (kind, subject, content, time.time()),
         )
         self.db.commit()
         return cur.lastrowid
@@ -128,7 +116,7 @@ class MemoryStore:
         many memories you get; it says nothing about how much text that is, and
         the thing downstream is a prompt with a finite context window.
         """
-        terms = " OR ".join(f'"{w}"' for w in query.split() if len(w) > 2)
+        terms = " OR ".join(f'"{word}"' for word in query.split() if len(word) > 2)
         if not terms:
             return []
         sql = ("SELECT m.id, m.kind, m.subject, m.content, m.created "
@@ -154,7 +142,7 @@ class MemoryStore:
             self.db.execute(
                 f"UPDATE memories SET accessed = ? WHERE id IN "
                 f"({','.join('?' * len(out))})",
-                [_now(), *[m.id for m in out]],
+                [time.time(), *[memory.id for memory in out]],
             )
             self.db.commit()
         return out
@@ -187,7 +175,14 @@ class MemoryStore:
             removed += self.db.execute(
                 "DELETE FROM memories WHERE id IN ("
                 "  SELECT id FROM memories"
-                "  ORDER BY COALESCE(accessed, created) ASC LIMIT ?)",
+                # Never-read rows go first. Ordering on the timestamp alone
+                # is not enough: time.time() ticks about every 15.6 ms on
+                # Windows, so a burst of writes and a recall all share one
+                # value, SQLite breaks the tie by rowid, and the oldest row
+                # is evicted no matter how recently it was used -- which is
+                # exactly the memory this function exists to keep.
+                "  ORDER BY (accessed IS NULL) DESC,"
+                "           COALESCE(accessed, created) ASC LIMIT ?)",
                 (over,),
             ).rowcount
 
@@ -204,7 +199,7 @@ class MemoryStore:
         """
         rows = self.db.execute("SELECT id, content FROM memories").fetchall()
         for memory_id, content in rows:
-            terms = [w for w in content.split() if len(w) > 2][:1]
+            terms = [word for word in content.split() if len(word) > 2][:1]
             if not terms:
                 continue
             hit = self.db.execute(
