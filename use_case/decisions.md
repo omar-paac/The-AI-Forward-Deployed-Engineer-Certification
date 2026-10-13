@@ -11,7 +11,7 @@ If you cannot name what you did not do, you did not choose.
 
 | Week | Decision | What you rejected | Why | What would change your mind |
 | --- | --- | --- | --- | --- |
-| 3 | <!-- retrieval approach --> | <!-- --> | <!-- --> | <!-- --> |
+| 3 | contact email | i hold this decision | to retrive it, we are a clik away on the market place page, or we would need to look into our ouw DB | If I am able to jump to the next step, build a Quote |
 | 5 | <!-- agent architecture --> | <!-- --> | <!-- --> | <!-- --> |
 | 6 | <!-- guardrail level --> | <!-- --> | <!-- --> | <!-- --> |
 | 7 | <!-- memory type --> | <!-- --> | <!-- --> | <!-- --> |

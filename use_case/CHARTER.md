@@ -62,7 +62,8 @@ would notice.
 | --- | --- |
 | **In** | Part Number, Condition, Quantity |
 | **Out** | A ranked list of vendors whose ILS listing matches, each with the PN, condition and quantity they list and a one-sentence reason |
-| **Out** | No answer, with the reason, when no listing matches |
+| **Out** | vendors exist, but every one is a near match, meaning short on quantity or a different condition |
+| **Out** | No answer, with the reason when no listing matches |
 
 ---
 

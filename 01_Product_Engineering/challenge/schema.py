@@ -12,9 +12,9 @@ from pydantic import BaseModel, Field, model_validator
 # Condition codes as they exist in AvSight, minus NQ.
 ConditionCode = Literal[ "FN", "NE", "NS"]
 
-# answered        at least one vendor lists this PN in this condition  -> use the list as is
-# low_confidence  only near matches (see caveat)                       -> show the list with the caveat
-# no_answer       nothing usable in the listings                       -> route to a buyer
+# answered        at least one vendor lists this PN in this condition and quantity -> use the list as is
+# low_confidence  vendors exist, but every one is a near match, meaning short on quantity or a different condition. -> show the list with the caveat
+# no_answer       nothing usable in the listings, or there are no vendors available  -> route to a buyer
 Status = Literal["answered", "low_confidence", "no_answer"]
 
 
@@ -69,7 +69,9 @@ class Response(BaseModel):
 def solve(request: Request) -> Response:
     """Find the vendors on ILS worth sending an RFQ to, for one part.
 
-    A vendor is an exact match when its listing has the requested PN and condition.
+    A vendor is an exact match when its listing has the requested PN and condition and quantity.
     Vendors listing a different condition or fewer units than requested are near matches.
+    Nothing usable in the listings, or there are no vendors available, that is no answer.
+
     """
     raise NotImplementedError("implement against this signature")
