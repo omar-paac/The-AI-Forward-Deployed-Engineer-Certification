@@ -18,37 +18,32 @@ put real hostnames, IPs, or architecture diagrams in this file.
 
 **Who did you ask?** (role, not name)
 
-<!-- your answer here -->
+Director of Technology, IT specialist.
 
 | # | Question | Answer |
 | :---: | --- | --- |
-| 1 | Where do internal apps run? (k8s, ECS, App Service, a VM someone maintains) | <!-- --> |
-| 2 | Which cloud? AWS, Azure, GCP, on-prem, several? | <!-- --> |
-| 3 | Is there an internal container registry? | <!-- --> |
-| 4 | How do users log in? (Okta, Entra ID, Ping, SAML, homegrown) | <!-- --> |
-| 5 | Can the app reach the internet? Egress proxy? Allowlist? | <!-- --> |
-| 6 | Where do secrets come from? (Vault, Secrets Manager, Key Vault) | <!-- --> |
-| 7 | Who approves a deployment, and what review does it need? | <!-- --> |
-| 8 | Is there an approved internal LLM endpoint already? | <!-- --> |
+| 1 | Where do internal apps run? (k8s, ECS, App Service, a VM someone maintains) | Pending |
+| 2 | Which cloud? AWS, Azure, GCP, on-prem, several? | Azure |
+| 3 | Is there an internal container registry? | pending |
+| 4 | How do users log in? (Okta, Entra ID, Ping, SAML, homegrown) | Jumpcloud |
+| 5 | Can the app reach the internet? Egress proxy? Allowlist? | Yes |
+| 6 | Where do secrets come from? (Vault, Secrets Manager, Key Vault) | pending |
+| 7 | Who approves a deployment, and what review does it need? | Director of Technology |
+| 8 | Is there an approved internal LLM endpoint already? | pending |
 
 **What surprised you?**
 
-<!-- your answer here -->
+PENDING
 
 **What would you have to change about your app to deploy there?**
 
-<!-- your answer here -->
+Not much. The idea is to run this in our ERP system, as a new module.
 
 ---
 
 ## Week 1 — what your machine told you
 
-<!--
-  Paste the egress probe output from Session 1 here. It is evidence, and it
-  frequently disagrees with what people believe about their own network.
--->
-
-## 2010-06-2026 Egress
+### 2010-06-2026 Egress
 
 | host | why | status | signed by |
 | --- | --- | --- | --- |

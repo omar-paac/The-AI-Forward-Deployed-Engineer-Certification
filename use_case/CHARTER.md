@@ -40,7 +40,7 @@ A slow part of getting material into stock is the 15 minutes manual quoting proc
 
 **What does the new world look like for that person?**
 
-The person creates a Purchase Request and gets a notification once a Vendor RFQ is received for her/his evaluation.
+The person Purchase Request and gets a notification once a Vendor RFQ is received for her/his evaluation.
 
 **How would the firm measure it? Which numbers should move?**
 
@@ -53,7 +53,7 @@ The person creates a Purchase Request and gets a notification once a Vendor RFQ 
 
 **Your solution in one sentence.**
 
-A module that will help us reduce the time spent in the sourcing process.
+A system that will help us research an specific part number in the open market, that will match the vendor, quantity and condition so we can proceed with an RFQ or a PO creation.
 
 **Input → Output.** Be specific enough that someone could build it wrong and you
 would notice.
