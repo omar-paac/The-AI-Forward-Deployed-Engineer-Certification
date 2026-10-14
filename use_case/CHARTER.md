@@ -40,7 +40,7 @@ A slow part of getting material into stock is the 15 minutes manual quoting proc
 
 **What does the new world look like for that person?**
 
-The person Purchase Request and gets a notification once a Vendor RFQ is received for her/his evaluation.
+The person creates a Purchase Request and gets a list of potential Vendors, so she/he can evaluate whom to send an RFQ to.
 
 **How would the firm measure it? Which numbers should move?**
 
