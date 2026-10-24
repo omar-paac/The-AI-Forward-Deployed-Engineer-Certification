@@ -12,6 +12,7 @@ from fastapi.responses import HTMLResponse
 from gradio import Server
 
 from llm import stream_reply
+from schema import Request, solve
 
 app = Server()
 
@@ -27,6 +28,20 @@ FRONTEND = Path(__file__).parent / "frontend" / "index.html"
 def chat(message: str, history: list | None = None) -> str:
     """Stream a reply to one user message."""
     yield from stream_reply(message, history)
+
+
+@app.api(name="find_rfq_vendors")
+def find_rfq_vendors(part_number: str, conditions: list[str], quantity: int, max_vendors: int = 5) -> str:
+    """Find the ILS vendors worth sending an RFQ to for one part number.
+
+    Searches ILS for the part (and its alternates) in the given condition codes
+    (NE, NS, FN, OH, SV, AR), then ranks exact matches before vendors that are
+    short on quantity or list an alternate part number. Each vendor carries its
+    RFQ email and AvSight account ID (null when not mapped yet). Returns the
+    Response as JSON: status answered, low_confidence, or no_answer.
+    """
+    request = Request(part_number=part_number, conditions=conditions, quantity=quantity, max_vendors=max_vendors)
+    return solve(request).model_dump_json(indent=2)
 
 
 # --- The frontend ------------------------------------------------------------

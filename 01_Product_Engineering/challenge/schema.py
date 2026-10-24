@@ -100,7 +100,7 @@ def solve(request: Request) -> Response:
             reason = "Match found on part number, condition, and quantity."
 
         if account is None:
-            reason += "Not mapped to an AvSight account yet: map it before logging the RFQ."
+            reason += " Not mapped to an AvSight account yet: map it before logging the RFQ."
 
         vendor = VendorMatch(
             vendor_name=listing["vendor_name"],
