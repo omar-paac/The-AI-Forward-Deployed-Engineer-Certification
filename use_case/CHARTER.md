@@ -24,7 +24,7 @@ Sourcing part numbers in the open market to restock. Identify vendors, send emai
 
 **How do they handle it today?**
 
-Based on a purchase request, we source for the right vendor that matches our part number condition (New, New Surplus, Factory New) and Quantity. Once identified, we send an RFQ email, wait for the response, and log this into our ERP system.  
+Based on a purchase request, we source for the right vendor that matches our part number condition (New, New Surplus, Factory New) and Quantity. Once identified, we send an RFQ email, wait for the response, and log this into our ERP system. It take around 5 min finding vendors, ~10 min emailing and logging the RFQs. Logging is slow because vendor info is typed in by hand.
 
 **What does that cost — time, money, risk, or relationships?**
 
@@ -32,7 +32,7 @@ The purchasing representative spends ~15min in researching a part, in different 
 
 **The problem in one sentence. No solution in it.**
 
-A slow part of getting material into stock is the 15 minutes manual quoting process the purchasing representative has to do before a PO is placed.
+A slow part of getting material into stock is the 15 minutes manual emailing and logging process, the purchasing representative has to do before a PO is placed.
 
 ---
 
@@ -61,9 +61,9 @@ would notice.
 | | |
 | --- | --- |
 | **In** | Part Number, Condition, Quantity |
-| **Out** | A ranked list of vendors whose ILS listing matches, each with the PN, condition and quantity they list and a one-sentence reason |
+| **Out** | For eah matched vedor: - an RFQ record ready to save: your account, your contact, and the part number, condition and quantity they list - a draft email to that vendor |
 | **Out** | vendors exist, but every one is a near match, meaning short on quantity or a different condition |
-| **Out** | No answer, with the reason when no listing matches |
+| **Out** | No answer, when there are no vendors |
 
 ---
 

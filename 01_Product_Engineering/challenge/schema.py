@@ -6,15 +6,16 @@ Out:  a ranked list of vendors whose ILS listing matches, each with what they li
 """
 
 from typing import Literal
-
 from pydantic import BaseModel, Field, model_validator
 
+from lookups import find_listings, match_account, normalize_pn
+
 # Condition codes as they exist in AvSight, minus NQ.
-ConditionCode = Literal[ "FN", "NE", "NS"]
+ConditionCode = Literal[ "FN", "NE", "NS", "OH", "SV", "AR"]
 
 # answered        at least one vendor lists this PN in this condition and quantity -> use the list as is
-# low_confidence  vendors exist, but every one is a near match, meaning short on quantity or a different condition. -> show the list with the caveat
-# no_answer       nothing usable in the listings, or there are no vendors available  -> route to a buyer
+# low_confidence  vendors exist, but every one is a near match, meaning short -> show the list with the caveat.
+# no_answer       nothing usable in the listings, or there are no vendors available or no rfq email -> route to a buyer
 Status = Literal["answered", "low_confidence", "no_answer"]
 
 
@@ -22,7 +23,7 @@ class Request(BaseModel):
     """What the buyer or upstream system hands in."""
 
     part_number: str = Field(min_length=1, description="The PN to source")
-    condition: ConditionCode = Field(description="Condition being requested")
+    conditions: list[ConditionCode] = Field(description="Conditions being requested", min_length=1)
     quantity: int = Field(gt=0, description="Units needed")
     max_vendors: int = Field(default=5, ge=1, le=20, description="Most vendors to return")
 
@@ -34,6 +35,8 @@ class VendorMatch(BaseModel):
     part_number_listed: str = Field(min_length=1, description="PN on the vendor's listing")
     condition_listed: str = Field(min_length=1, description="Condition on the vendor's listing")
     quantity_available: int = Field(ge=0, description="Quantity on the vendor's listing")
+    rfq_email: str | None = Field(default=None, description="Email to send the RFQ to; None if not known")
+    account_id: str | None = Field(default=None, description="Salesforce account ID; None if not known")
     reason: str = Field(min_length=1, description="One sentence: why this vendor, and any mismatch")
 
 
@@ -70,8 +73,57 @@ def solve(request: Request) -> Response:
     """Find the vendors on ILS worth sending an RFQ to, for one part.
 
     A vendor is an exact match when its listing has the requested PN and condition and quantity.
-    Vendors listing a different condition or fewer units than requested are near matches.
-    Nothing usable in the listings, or there are no vendors available, that is no answer.
+    Vendors listing fewer units or an alternate PN than requested are near matches.
+    Nothing usable in the listings, or there are no vendors available, or the vendor has no email listed, that is a no answer.
 
     """
-    raise NotImplementedError("implement against this signature")
+
+    listings = find_listings(request.part_number, request.conditions)
+    if not listings:
+        return Response(
+            status="no_answer",
+            no_answer_reason=f"No vendor lists {request.part_number} in {', '.join(request.conditions)}.",
+        )
+
+    exact_vendors = []
+    near_vendors = []
+    for listing in listings:
+        account = match_account(listing["ils_code"])
+        alternate = normalize_pn(listing["part_number"]) != normalize_pn(request.part_number)
+        short = listing["quantity"] < request.quantity
+        exact = not alternate and not short
+        if alternate:
+            reason = f"Alternate part number: lists {listing['part_number']}, verify interchangeability."
+        elif short:
+            reason = f"Short on quantity: {listing['quantity']} of {request.quantity}."
+        else:
+            reason = "Match found on part number, condition, and quantity."
+
+        if account is None:
+            reason += "Not mapped to an AvSight account yet: map it before logging the RFQ."
+
+        vendor = VendorMatch(
+            vendor_name=listing["vendor_name"],
+            part_number_listed=listing["part_number"],
+            condition_listed=listing["condition"],
+            quantity_available=listing["quantity"],
+            rfq_email=listing["rfq_contact"]["email"],
+            account_id=account["account_id"] if account else None,
+            reason=reason,
+        )
+        if exact:
+            exact_vendors.append(vendor)
+        else:
+            near_vendors.append(vendor)
+
+    # Exact matches first, then near matches, capped at what the buyer asked for.
+    vendors = (exact_vendors + near_vendors)[: request.max_vendors]
+
+    if exact_vendors:
+        return Response(status="answered", vendors=vendors)
+
+    return Response(
+        status="low_confidence",
+        vendors=vendors,
+        caveat="No vendor has an exact match: every listing is short on quantity or an alternate part number.",
+    )
