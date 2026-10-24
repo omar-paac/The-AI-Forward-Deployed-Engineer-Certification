@@ -8,3 +8,7 @@
 2. What exactly goes in — a string, a file, several fields? Several fields: A Part Number, a list of conditions, quantity, and an option to cap the list of vendors to return.
 3. What comes back, and who reads it? The purchasing representative. They will get a status (answered, low confidence or no answer). A rakned list of Vendors, with an email address, account ID and a reason per each vendor. The rep will be able to pick who to send the RFQ. The account ID will be used later, without it, we will not be able to log the RFQs in the system.
 4. What did you name it, and why would an agent pick it correctly? find_rfq_vendors, the verb says the action, rfq vendors says which vendors and for what, and the typed fields and docstring tell an agent what to send.
+
+## Step 9 — Docker
+
+We continue here

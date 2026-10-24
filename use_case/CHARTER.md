@@ -61,7 +61,7 @@ would notice.
 | | |
 | --- | --- |
 | **In** | Part Number, Condition, Quantity |
-| **Out** | For eah matched vedor: - an RFQ record ready to save: your account, your contact, and the part number, condition and quantity they list - a draft email to that vendor |
+| **Out** | For each matched vendor: - an RFQ record ready to save: your account, your contact, and the part number, condition and quantity they list - a draft email to that vendor |
 | **Out** | vendors exist, but every one is a near match, meaning short on quantity or a different condition |
 | **Out** | No answer, when there are no vendors |
 
