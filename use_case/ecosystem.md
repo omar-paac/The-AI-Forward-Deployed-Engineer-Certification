@@ -24,12 +24,12 @@ Director of Technology, IT specialist.
 | :---: | --- | --- |
 | 1 | Where do internal apps run? (k8s, ECS, App Service, a VM someone maintains) | Pending |
 | 2 | Which cloud? AWS, Azure, GCP, on-prem, several? | Azure |
-| 3 | Is there an internal container registry? | pending |
+| 3 | Is there an internal container registry? | Nog |
 | 4 | How do users log in? (Okta, Entra ID, Ping, SAML, homegrown) | Jumpcloud |
 | 5 | Can the app reach the internet? Egress proxy? Allowlist? | Yes |
-| 6 | Where do secrets come from? (Vault, Secrets Manager, Key Vault) | pending |
+| 6 | Where do secrets come from? (Vault, Secrets Manager, Key Vault) | No vaults |
 | 7 | Who approves a deployment, and what review does it need? | Director of Technology |
-| 8 | Is there an approved internal LLM endpoint already? | pending |
+| 8 | Is there an approved internal LLM endpoint already? | No, there is not |
 
 **What surprised you?**
 

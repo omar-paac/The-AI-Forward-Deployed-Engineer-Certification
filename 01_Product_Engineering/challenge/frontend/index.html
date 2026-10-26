@@ -3,44 +3,112 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Rename this. It is your app. -->
-    <title>Your AI Application</title>
+    <title>Vendor Quotes Collector</title>
     <style>
+      :root {
+        --ink: #1d2733;
+        --muted: #5b6776;
+        --line: #d7dde4;
+        --panel: #f5f7fa;
+        --accent: #1f6f43;
+        --warn: #8a5a00;
+        --warn-bg: #fff4dc;
+        --bad: #9b1c1c;
+        --bad-bg: #fde8e8;
+        --ok-bg: #e5f4ea;
+      }
       body {
         font-family: system-ui, sans-serif;
-        max-width: 44rem;
+        color: var(--ink);
+        max-width: 64rem;
         margin: 2rem auto;
         padding: 0 1rem;
         line-height: 1.5;
       }
-      #log {
-        border: 1px solid #ccc;
-        border-radius: 6px;
+      h1 { margin-bottom: 0.25rem; }
+      .sub { color: var(--muted); margin-top: 0; }
+      form#rfq {
+        display: grid;
+        grid-template-columns: 2fr 3fr 1fr 1fr auto;
+        gap: 0.75rem;
+        align-items: end;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
         padding: 1rem;
-        min-height: 20rem;
-        margin-bottom: 1rem;
-        white-space: pre-wrap;
-        overflow-y: auto;
       }
+      label { display: block; font-size: 0.85rem; color: var(--muted); }
+      input[type="text"], input[type="number"] { width: 100%; box-sizing: border-box; padding: 0.45rem; font: inherit; }
+      fieldset { border: 0; padding: 0; margin: 0; }
+      fieldset label { display: inline-flex; gap: 0.25rem; margin-right: 0.6rem; color: var(--ink); font-size: 1rem; }
+      button { padding: 0.5rem 1rem; font: inherit; cursor: pointer; }
+      #rfq button { background: var(--accent); color: white; border: 0; border-radius: 6px; }
+      #status { margin: 1rem 0 0.5rem; padding: 0.6rem 0.8rem; border-radius: 6px; display: none; }
+      #status.answered { display: block; background: var(--ok-bg); }
+      #status.low_confidence { display: block; background: var(--warn-bg); color: var(--warn); }
+      #status.no_answer, #status.error { display: block; background: var(--bad-bg); color: var(--bad); }
+      table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+      th, td { text-align: left; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { background: var(--panel); }
+      .unmapped { color: var(--warn); font-weight: 600; }
+      #examples { margin: 0.75rem 0 0; font-size: 0.9rem; color: var(--muted); }
+      #examples button { margin: 0.25rem 0.4rem 0 0; padding: 0.25rem 0.6rem; font-size: 0.85rem; background: white; border: 1px solid var(--line); border-radius: 999px; }
+      #examples button:hover { border-color: var(--accent); }
+      details { margin-top: 2.5rem; }
+      #log { border: 1px solid var(--line); border-radius: 6px; padding: 1rem; min-height: 10rem; margin: 1rem 0; white-space: pre-wrap; }
       .turn { margin-bottom: 1rem; }
       .who { font-weight: 600; }
-      form { display: flex; gap: 0.5rem; }
-      input { flex: 1; padding: 0.5rem; font: inherit; }
-      button { padding: 0.5rem 1rem; font: inherit; }
+      form#chat { display: flex; gap: 0.5rem; }
+      form#chat input { flex: 1; padding: 0.5rem; font: inherit; }
+      @media (max-width: 720px) { form#rfq { grid-template-columns: 1fr; } }
     </style>
   </head>
   <body>
-    <h1>Your AI Application</h1>
-    <p>
-      This is a deliberately plain frontend. Making it good is your job — open
-      this file in VS Code and point Claude Code at it.
-    </p>
+    <h1>Vendor Quotes Collector</h1>
+    <p class="sub">Find the ILS vendors worth sending an RFQ to. Demo data only: every vendor, email and account here is fake.</p>
 
-    <div id="log"></div>
-    <form id="form">
-      <input id="input" placeholder="Ask something..." autocomplete="off" />
-      <button type="submit">Send</button>
+    <form id="rfq">
+      <div>
+        <label for="pn">Part number</label>
+        <input id="pn" type="text" placeholder="MS15001-3" required autocomplete="off" />
+      </div>
+      <fieldset>
+        <label style="display:block;color:var(--muted);font-size:0.85rem">Conditions</label>
+        <label><input type="checkbox" name="cond" value="NE" checked />NE</label>
+        <label><input type="checkbox" name="cond" value="NS" />NS</label>
+        <label><input type="checkbox" name="cond" value="FN" />FN</label>
+        <label><input type="checkbox" name="cond" value="OH" />OH</label>
+        <label><input type="checkbox" name="cond" value="SV" />SV</label>
+        <label><input type="checkbox" name="cond" value="AR" />AR</label>
+      </fieldset>
+      <div>
+        <label for="qty">Quantity</label>
+        <input id="qty" type="number" min="1" value="1" required />
+      </div>
+      <div>
+        <label for="max">Max vendors</label>
+        <input id="max" type="number" min="1" max="20" value="5" />
+      </div>
+      <button type="submit">Find vendors</button>
     </form>
+    <p id="examples">Try an example:</p>
+
+    <div id="status"></div>
+    <table id="results" hidden>
+      <thead>
+        <tr><th>Vendor</th><th>PN listed</th><th>Cond.</th><th>Qty</th><th>RFQ email</th><th>AvSight account</th><th>Reason</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <details>
+      <summary>General chat (the starter endpoint)</summary>
+      <div id="log"></div>
+      <form id="chat">
+        <input id="input" placeholder="Ask something..." autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+    </details>
 
     <script type="module">
       // NOTE: this loads the Gradio client from a public CDN. On a locked-down
@@ -50,8 +118,96 @@
       import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
 
       const client = await Client.connect(window.location.origin);
+
+      // --- RFQ vendors ------------------------------------------------------
+      const statusBox = document.getElementById("status");
+      const table = document.getElementById("results");
+      const tbody = table.querySelector("tbody");
+
+      const STATUS_LABEL = {
+        answered: "Answered: at least one vendor matches exactly.",
+        low_confidence: "Low confidence: only near matches.",
+        no_answer: "No answer.",
+      };
+
+      // One per golden example, so anyone can test without knowing real part numbers.
+      const EXAMPLES = [
+        { label: "Exact match", pn: "BACB30NW6K-5Y", conditions: ["NE"], qty: 150 },
+        { label: "Short quantity", pn: "452T2125-1", conditions: ["NE", "NS"], qty: 3 },
+        { label: "Alternate PN", pn: "69494J155", conditions: ["NS"], qty: 2 },
+        { label: "No vendor", pn: "XYZ12345", conditions: ["NE"], qty: 10 },
+        { label: "Exact + unmapped", pn: "MS15001-3", conditions: ["NE", "NS"], qty: 10 },
+      ];
+
+      const examples = document.getElementById("examples");
+      for (const ex of EXAMPLES) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = `${ex.label}: ${ex.pn}`;
+        button.addEventListener("click", () => {
+          document.getElementById("pn").value = ex.pn;
+          document.getElementById("qty").value = ex.qty;
+          for (const box of document.querySelectorAll("input[name=cond]")) box.checked = ex.conditions.includes(box.value);
+          document.getElementById("rfq").requestSubmit();
+        });
+        examples.append(button);
+      }
+
+      function showStatus(kind, text) {
+        statusBox.className = kind;
+        statusBox.textContent = text;
+      }
+
+      function cell(text, className) {
+        const td = document.createElement("td");
+        td.textContent = text;
+        if (className) td.className = className;
+        return td;
+      }
+
+      document.getElementById("rfq").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const conditions = [...document.querySelectorAll("input[name=cond]:checked")].map((box) => box.value);
+        if (!conditions.length) return showStatus("error", "Pick at least one condition.");
+
+        showStatus("answered", "Searching...");
+        table.hidden = true;
+        tbody.replaceChildren();
+
+        try {
+          const result = await client.predict("/find_rfq_vendors", {
+            part_number: document.getElementById("pn").value.trim(),
+            conditions,
+            quantity: Number(document.getElementById("qty").value),
+            max_vendors: Number(document.getElementById("max").value),
+          });
+          const response = JSON.parse(result.data[0]);
+
+          const extra = response.caveat || response.no_answer_reason || "";
+          showStatus(response.status, `${STATUS_LABEL[response.status]} ${extra}`);
+
+          for (const v of response.vendors) {
+            const row = document.createElement("tr");
+            row.append(
+              cell(v.vendor_name),
+              cell(v.part_number_listed),
+              cell(v.condition_listed),
+              cell(String(v.quantity_available)),
+              cell(v.rfq_email ?? "none"),
+              v.account_id ? cell(v.account_id) : cell("Unmapped", "unmapped"),
+              cell(v.reason),
+            );
+            tbody.append(row);
+          }
+          table.hidden = response.vendors.length === 0;
+        } catch (err) {
+          // Show the failure on the page: a silent empty table looks like "no vendors".
+          showStatus("error", `Request failed: ${err.message ?? err}`);
+        }
+      });
+
+      // --- General chat (unchanged starter) -------------------------------
       const log = document.getElementById("log");
-      const form = document.getElementById("form");
       const input = document.getElementById("input");
 
       // The model has no memory. This array is the entire conversation.
@@ -65,11 +221,10 @@
         div.appendChild(span);
         span.textContent = text;
         log.appendChild(div);
-        log.scrollTop = log.scrollHeight;
         return span;
       }
 
-      form.addEventListener("submit", async (e) => {
+      document.getElementById("chat").addEventListener("submit", async (e) => {
         e.preventDefault();
         const message = input.value.trim();
         if (!message) return;
@@ -85,7 +240,6 @@
           if (event.type === "data") {
             reply = event.data[0];
             out.textContent = reply;
-            log.scrollTop = log.scrollHeight;
           }
         }
 

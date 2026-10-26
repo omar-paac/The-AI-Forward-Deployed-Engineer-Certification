@@ -1,0 +1,10 @@
+[
+  {"ils_code": "VNDA", "account_id": "001FAKE0000000001", "account_name": "Vendor A",
+   "contacts": [{"name": "Alex Rivera", "email": "alex.rivera@vendor-a.example.com"}]},
+  {"ils_code": "VNDB", "account_id": "001FAKE0000000002", "account_name": "Vendor B",
+   "contacts": [{"name": "Sam Chen", "email": "sam.chen@vendor-b.example.com"}]},
+  {"ils_code": "VNDC", "account_id": "001FAKE0000000003", "account_name": "Vendor C",
+   "contacts": [{"name": "Jordan Patel", "email": "jordan.patel@vendor-c.example.com"}]},
+  {"ils_code": "VNDD", "account_id": "001FAKE0000000004", "account_name": "Vendor D",
+   "contacts": [{"name": "Casey Morgan", "email": "casey.morgan@vendor-d.example.com"}]}
+]

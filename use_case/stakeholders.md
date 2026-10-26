@@ -11,7 +11,7 @@ Use roles, not names. This is a public repo.
 
 | Week | Who (role) | What you asked | What you learned | Follow-up |
 | --- | --- | --- | --- | --- |
-| 1 | <!-- e.g. Platform Engineering lead --> | <!-- where would a container run here? --> | <!-- --> | <!-- --> |
+| 1 | Three purchasing representatives (Buyer A, Buyer B for rotables, Buyer C) | Demo of the vendor finder; what blocks them today | Mass-sending RFQ emails and recording RFQs is the most time-consuming job. ILS RFQ emails can't be tracked until a vendor replies. Wanted a dropdown merging ILS emails with our contact list. Rotables need trace and traced-by info. Many vendors send an NQ auto-reply | Next slice: mass email plus RFQ logging; email dropdown; handle NQ auto-replies |
 
 ---
 

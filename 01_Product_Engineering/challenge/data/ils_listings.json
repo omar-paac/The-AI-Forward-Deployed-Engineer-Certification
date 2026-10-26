@@ -1,0 +1,8 @@
+[
+  {"ils_code": "VNDA", "vendor_name": "Vendor A", "part_number": "BACB30NW6K-5Y", "alt_part_number": null, "condition": "NE", "quantity": 150, "rfq_contact": {"name": "Alex Rivera", "email": "rfq@vendor-a.example.com"}},
+  {"ils_code": "VNDB", "vendor_name": "Vendor B", "part_number": "452T2125-1", "alt_part_number": null, "condition": "NS", "quantity": 1, "rfq_contact": {"name": "Sam Chen", "email": "rfq@vendor-b.example.com"}},
+  {"ils_code": "VNDC", "vendor_name": "Vendor C", "part_number": "69494J155-ALT.", "alt_part_number": "69494J155", "condition": "NS", "quantity": 2, "rfq_contact": {"name": "Jordan Patel", "email": "rfq@vendor-c.example.com"}},
+  {"ils_code": "VNDD", "vendor_name": "Vendor D", "part_number": "69494", "alt_part_number": null, "condition": "SV", "quantity": 100, "rfq_contact": {"name": "Casey Morgan", "email": "rfq@vendor-d.example.com"}},
+  {"ils_code": "VNDC", "vendor_name": "Vendor C", "part_number": "MS15001-3.", "alt_part_number": null, "condition": "NE", "quantity": 10, "rfq_contact": {"name": "Jordan Patel", "email": "rfq@vendor-c.example.com"}},
+  {"ils_code": "VNDE", "vendor_name": "Vendor E", "part_number": "MS15001-3.", "alt_part_number": null, "condition": "NS", "quantity": 4, "rfq_contact": {"name": "Riley Brooks", "email": "rfq@vendor-e.example.com"}}
+]
