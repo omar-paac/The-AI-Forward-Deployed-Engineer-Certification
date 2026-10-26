@@ -111,3 +111,31 @@ The next slice (drafting the RFQ email) will use a model, so it will have a real
 ### Which project at work this is for
 
 The RFQ Module in AvSight, on the REQ record.
+
+## Step 12 — Demo to real users
+
+Shown to three purchasing representatives (Buyer A, Buyer B, Buyer C). Names removed.
+
+### Notes, as written after the session
+
+> All said this is a great idea. Buyer A and Buyer B main blocking point is to 'mass' send emails and record the RFQ's in the system. This is the most time-consuming job.
+>
+> ILS Emails: Buyer A uses the ILS RFQ email functionality; Buyer C as well, but he has more. However, you can't track the emails except when there is a reply form the vendor.
+>
+> Buyer B - The idea makes sense to him as long as there are OH, SV, and AT options (which are already there). Mass sending emails is good. Suggested a 'dropdown' email list to merge ILS email with our contact list.
+>
+> For Rotables (Buyer B's), trace and traced-by information is key.
+>
+> Buyer B checks OEM platforms for price references only. Buyer A and Buyer C to buy. We all use ILS as our main marketplace.
+>
+> Buyer C mentioned the ILS system has many vendors with an NQ auto-reply;
+
+### The three answers
+
+1. What would you use this for? Mass sending RFQs and logging them in the system.
+2. What is missing before you would actually use it?  Mass email, RFQ logging, the email dropdown, trace info for rotables, NQ auto-reply handling.
+3. What would you expect it to cost? I did not ask this. 
+
+### The five goldens
+
+Not shown to the buyers in this session. Next session: show them and ask which of the five they would reject.
