@@ -162,7 +162,7 @@ commands, and these are the ones worth knowing:
 | --- | --- |
 | `make nb F=<file.py>` | `uv run marimo edit --sandbox <file.py>` |
 | `make mirrors` | `uv run python scripts\mirrors.py --write` |
-| `make check` | the five commands below |
+| `make check` | the eight commands below |
 
 `make check` is the full gate suite. Nothing here needs a model or a network,
 so it cannot cost you anything or flake:
@@ -170,6 +170,9 @@ so it cannot cost you anything or flake:
 ```powershell
 uv run python scripts\mirrors.py --check
 uv run python scripts\check_links.py
+uv run python scripts\check_standalone.py
+uv run python scripts\check_roundtrip.py
+uv run python scripts\check_deliverables.py
 uv run --group dev python scripts\check_manifests.py
 uv run python scripts\check_helpers.py
 uv run --group dev python -m pytest tests/ -q
